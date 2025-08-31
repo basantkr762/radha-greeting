@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radha–Krishna Virtual Greeting Card Generator</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- VanillaTilt JS for 3D parallax effect -->
+    <script src="vanilla-tilt.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Styles and Tailwind Config -->
+    <style>
+        /* Floating animated 3D shapes */
+        .floating-3d-shape {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.5;
+            animation: float3d 12s ease-in-out infinite alternate;
+            filter: drop-shadow(0 8px 24px #a6c1ee);
+        }
+        @keyframes float3d {
+            0% { transform: translateY(0) scale(1) rotateY(0deg); }
+            50% { transform: translateY(-40px) scale(1.1) rotateY(20deg); }
+            100% { transform: translateY(0) scale(1) rotateY(0deg); }
+        }
+        /* Animated gradient backgrounds for sections */
+        .gradient-section {
+            background: linear-gradient(120deg, #fbc2eb 0%, #a6c1ee 100%);
+            background-size: 200% 200%;
+            animation: sectionGradient 8s ease-in-out infinite alternate;
+            box-shadow: 0 8px 32px 0 rgba(60,60,120,0.18);
+            border-radius: 2rem;
+            transform: perspective(800px) rotateX(2deg) scale(1.01);
+        }
+        @keyframes sectionGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        /* Custom CSS for animations, overlays, and specific styles */
+            /* Animated glow for headings */
+            .heading-glow {
+                text-shadow: 0 0 12px #fbc2eb, 0 0 24px #a6c1ee;
+                animation: headingGlow 2s ease-in-out infinite alternate;
+            }
+            @keyframes headingGlow {
+                0% { text-shadow: 0 0 12px #fbc2eb, 0 0 24px #a6c1ee; }
+                100% { text-shadow: 0 0 24px #fbc2eb, 0 0 36px #a6c1ee; }
+            }
+            /* Animated glowing border for card preview */
+            .glow-border {
+                position: relative;
+                box-shadow: 0 0 30px 5px #fbc2eb, 0 0 60px 10px #a6c1ee;
+                border-radius: 1rem;
+                animation: glow 2.5s linear infinite alternate;
+            }
+
+            @keyframes glow {
+                0% { box-shadow: 0 0 30px 5px #fbc2eb, 0 0 60px 10px #a6c1ee; }
+                100% { box-shadow: 0 0 50px 10px #fbc2eb, 0 0 80px 20px #a6c1ee; }
+            }
+
+            /* Shimmer effect for button */
+            .shimmer-btn {
+                position: relative;
+                overflow: hidden;
+            }
+            .shimmer-btn::before {
+                content: '';
+                position: absolute;
+                top: 0; left: -75%;
+                width: 50%; height: 100%;
+                background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.2) 100%);
+                animation: shimmer 2s infinite;
+            }
+            @keyframes shimmer {
+                100% { left: 125%; }
+            }
+
+            /* Animated overlay for hero section */
+            .animated-hero-overlay {
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                background: radial-gradient(circle at 60% 40%, rgba(251,194,235,0.15) 0%, rgba(166,193,238,0.12) 60%, transparent 100%);
+                animation: heroOverlayMove 8s ease-in-out infinite alternate;
+            }
+            @keyframes heroOverlayMove {
+                0% { background-position: 60% 40%; }
+                100% { background-position: 40% 60%; }
+            }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(270deg, #fbc2eb, #a6c1ee, #fbc2eb, #fcd6e6);
+            background-size: 600% 600%;
+            animation: gradientBG 16s ease infinite;
+            /* Animated gradient background */
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .font-great-vibes {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: float 15s ease-in-out infinite;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-30px) translateX(20px) rotate(10deg);
+            }
+
+            100% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+        }
+
+        .floating-element:nth-child(2) {
+            animation-duration: 20s;
+            animation-delay: -5s;
+            left: 20%;
+            top: 15%;
+            width: 60px;
+        }
+
+        .floating-element:nth-child(3) {
+            animation-duration: 25s;
+            animation-delay: -10s;
+            right: 10%;
+            top: 20%;
+            width: 80px;
+        }
+
+        .floating-element:nth-child(4) {
+            animation-duration: 18s;
+            animation-delay: -2s;
+            left: 5%;
+            bottom: 10%;
+            width: 50px;
+        }
+
+        .floating-element:nth-child(5) {
+            animation-duration: 22s;
+            animation-delay: -8s;
+            right: 25%;
+            bottom: 15%;
+            width: 70px;
+        }
+
+        /* FAQ Accordion */
+        .faq-question.active+.faq-answer {
+            max-height: 200px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+
+        .faq-question .icon {
+            transition: transform 0.3s ease-out;
+        }
+
+        .faq-question.active .icon {
+            transform: rotate(180deg);
+        }
+
+        /* Generator controls active state */
+        .control-item.active {
+            border-color: #F59E0B;
+            /* Amber-500 */
+            transform: scale(1.05);
+        }
+
+        /* Subtle background pattern for the generator */
+        .generator-bg {
+            background-color: #fdf2f8;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23fbcfe8' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.99 7.5V30L0 22.5zM15 0l13 7.5v15L15 30V15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+
+    <!-- Header -->
+    <header id="home" class="bg-white/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-md">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="font-great-vibes text-3xl text-pink-600">Radha–Krishna Greetings</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-600 hover:text-pink-500 transition">Home</a>
+                <a href="#generator" class="text-gray-600 hover:text-pink-500 transition">Generator</a>
+                <a href="#about" class="text-gray-600 hover:text-pink-500 transition">About</a>
+                <a href="#faq" class="text-gray-600 hover:text-pink-500 transition">FAQ</a>
+                <a href="#contact" class="text-gray-600 hover:text-pink-500 transition">Contact</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#home" class="block py-2 text-gray-600 hover:text-pink-500 transition">Home</a>
+            <a href="#generator" class="block py-2 text-gray-600 hover:text-pink-500 transition">Generator</a>
+            <a href="#about" class="block py-2 text-gray-600 hover:text-pink-500 transition">About</a>
+            <a href="#faq" class="block py-2 text-gray-600 hover:text-pink-500 transition">FAQ</a>
+            <a href="#contact" class="block py-2 text-gray-600 hover:text-pink-500 transition">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center text-white text-center bg-cover bg-center gradient-section"
+            style="background-image: url('vrindavan.jpg');">
+            <div class="absolute inset-0 hero-gradient"></div>
+            <div class="animated-hero-overlay"></div>
+            <!-- Floating 3D SVG shapes -->
+            <svg class="floating-3d-shape" style="left:5%;top:20%;width:80px;" viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" fill="#a6c1ee"/></svg>
+            <svg class="floating-3d-shape" style="right:10%;top:60%;width:60px;" viewBox="0 0 60 60"><rect x="10" y="10" width="40" height="40" rx="12" fill="#fbc2eb"/></svg>
+            <svg class="floating-3d-shape" style="left:50%;top:80%;width:50px;" viewBox="0 0 50 50"><polygon points="25,5 45,45 5,45" fill="#fcd6e6"/></svg>
+
+            <!-- Floating Animations -->
+            <div class="absolute inset-0 overflow-hidden">
+                <!-- Peacock Feather SVG -->
+                <svg class="floating-element" style="left: 10%; top: 10%; width: 100px;" viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M50 95C50 95 20 70 20 40c0-16.568 13.432-30 30-30s30 13.432 30 30c0 30-30 55-30 55z"
+                            stroke="#34D399" />
+                        <path d="M50 60a15 15 0 100-30 15 15 0 000 30z" stroke="#3B82F6" />
+                        <circle cx="50" cy="45" r="5" fill="#A78BFA" />
+                    </g>
+                </svg>
+                <svg class="floating-element" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M50 95C50 95 20 70 20 40c0-16.568 13.432-30 30-30s30 13.432 30 30c0 30-30 55-30 55z"
+                            stroke="#34D399" />
+                        <path d="M50 60a15 15 0 100-30 15 15 0 000 30z" stroke="#3B82F6" />
+                        <circle cx="50" cy="45" r="5" fill="#A78BFA" />
+                    </g>
+                </svg>
+                <svg class="floating-element" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M50 95C50 95 20 70 20 40c0-16.568 13.432-30 30-30s30 13.432 30 30c0 30-30 55-30 55z"
+                            stroke="#34D399" />
+                        <path d="M50 60a15 15 0 100-30 15 15 0 000 30z" stroke="#3B82F6" />
+                        <circle cx="50" cy="45" r="5" fill="#A78BFA" />
+                    </g>
+                </svg>
+                <!-- Diya Light SVG -->
+                <svg class="floating-element" style="animation-duration: 30s;" viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 80 Q50 90 80 80 L75 85 Q50 95 25 85Z" fill="#F59E0B" />
+                    <path d="M45 70 Q50 50 55 70 C 60 75 40 75 45 70Z" fill="orange"
+                        style="filter: drop-shadow(0 0 10px orange);" />
+                </svg>
+                <svg class="floating-element" style="animation-duration: 28s;" viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 80 Q50 90 80 80 L75 85 Q50 95 25 85Z" fill="#F59E0B" />
+                    <path d="M45 70 Q50 50 55 70 C 60 75 40 75 45 70Z" fill="orange"
+                        style="filter: drop-shadow(0 0 10px orange);" />
+                </svg>
+            </div>
+
+            <div class="relative z-10 p-4">
+                <h1 class="font-great-vibes text-6xl md:text-8xl mb-4"
+                    class="font-great-vibes text-6xl md:text-8xl mb-4 heading-glow">Share Divine Love</h1>
+                <p class="text-lg md:text-2xl mb-8 max-w-2xl mx-auto">Create and send beautiful Radha–Krishna greeting
+                    cards to your loved ones in seconds.</p>
+                <a href="#generator"
+                    class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg shimmer-btn">
+                    Create Your Greeting
+                </a>
+            </div>
+        </section>
+
+        <!-- Greeting Card Generator Section -->
+    <section id="generator" class="py-20 generator-bg gradient-section">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold text-pink-800 font-great-vibes heading-glow">Card Generator</h2>
+                    <p class="text-gray-600 mt-2">Unleash your creativity and design a card from the heart.</p>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                    <!-- Canvas Preview -->
+                    <div class="lg:w-1/2 flex flex-col items-center">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-700">Live Preview</h3>
+                        <div class="w-full max-w-xl aspect-[4/3] bg-white rounded-lg shadow-2xl overflow-hidden">
+                            <div class="glow-border">
+                                                                <canvas id="greetingCanvas" class="w-full h-full"></canvas>
+                                                                <script>
+                                                                    window.addEventListener('DOMContentLoaded', function() {
+                                                                        if (window.VanillaTilt) {
+                                                                            VanillaTilt.init(document.querySelectorAll('.glow-border'), {
+                                                                                max: 25,
+                                                                                speed: 400,
+                                                                                glare: true,
+                                                                                "max-glare": 0.3,
+                                                                                scale: 1.04,
+                                                                                perspective: 1200
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                </script>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Your creation will appear here.</p>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="lg:w-1/2">
+                        <!-- Background Options -->
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3 text-gray-700">1. Choose a Background</h4>
+                            <div id="backgroundOptions" class="grid grid-cols-3 gap-3">
+                                <!-- Backgrounds will be injected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Text Customization -->
+                        <div class="mt-8">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-700">2. Add Your Message</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input type="text" id="customText" placeholder="Enter your message..."
+                                    value="Radha ke bina Krishna adhoore, aapke bina hum bhi adhoore 🙏💞"
+                                    class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-400 focus:outline-none">
+                                <select id="fontSelector"
+                                    class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-400 focus:outline-none">
+                                    <option value="Poppins">Poppins</option>
+                                    <option value="Great Vibes">Great Vibes</option>
+                                    <option value="Georgia">Georgia</option>
+                                    <option value="Verdana">Verdana</option>
+                                </select>
+                                <div class="flex items-center gap-2">
+                                    <label for="textColor">Color:</label>
+                                    <input type="color" id="textColor" value="#FFFFFF"
+                                        class="h-10 w-16 border-none rounded-md cursor-pointer">
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <label for="textEffect">Effect:</label>
+                                    <select id="textEffect"
+                                        class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-400 focus:outline-none">
+                                        <option value="none">None</option>
+                                        <option value="shadow">Shadow</option>
+                                        <option value="glow">Glow</option>
+                                        <option value="outline">Outline</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sticker Customization -->
+                        <div class="mt-8">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-700">3. Add Stickers</h4>
+                            <div id="stickerOptions" class="grid grid-cols-4 gap-3">
+                                <!-- Stickers will be injected by JS -->
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">Drag stickers onto the card to add them.</p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                            <button id="downloadBtn"
+                                class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Download as PNG
+                            </button>
+                            <button id="shareBtn"
+                                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                                </svg>
+                                Share Card
+                            </button>
+                        </div>
+                        <div id="shareMessage" class="text-center text-sm text-red-500 mt-2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+    <section id="about" class="py-20 bg-white gradient-section">
+            <div class="container mx-auto px-6 text-center max-w-3xl">
+                <h2 class="text-4xl md:text-5xl font-bold text-blue-800 font-great-vibes">About this Project</h2>
+                <div class="w-24 h-1 bg-blue-400 mx-auto my-4"></div>
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    The eternal love between Radha and Krishna is the epitome of divine affection and devotion. It
+                    represents the ultimate union of the individual soul (Jivatma) with the Supreme Soul (Paramatma).
+                    This project is a small tribute to that divine love, created to help you share blessings, joy, and
+                    spiritual connection with friends and family through beautiful, personalized greeting cards. We hope
+                    this tool brings a little more light and love into your life.
+                </p>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-blue-50 gradient-section">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 font-great-vibes">Frequently Asked
+                        Questions</h2>
+                    <p class="text-gray-600 mt-2">Have questions? We have answers.</p>
+                </div>
+                <div id="faq-accordion" class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-white rounded-lg shadow-md">
+                        <button
+                            class="faq-question w-full text-left p-4 flex justify-between items-center font-semibold text-gray-700">
+                            How do I download the card?
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="faq-answer px-4 text-gray-600">
+                            After designing your card in the generator, simply click the "Download as PNG" button. Your
+                            browser will prompt you to save the image file to your device.
+                        </div>
+                    </div>
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-white rounded-lg shadow-md">
+                        <button
+                            class="faq-question w-full text-left p-4 flex justify-between items-center font-semibold text-gray-700">
+                            Is this service completely free?
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="faq-answer px-4 text-gray-600">
+                            Yes, absolutely! This is a passion project made for everyone to use and share freely. There
+                            are no hidden costs or subscriptions.
+                        </div>
+                    </div>
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-white rounded-lg shadow-md">
+                        <button
+                            class="faq-question w-full text-left p-4 flex justify-between items-center font-semibold text-gray-700">
+                            Can I use my own images or stickers?
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="faq-answer px-4 text-gray-600">
+                            Currently, the generator only supports the provided selection of backgrounds. We are
+                            considering adding an upload feature in the future.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white gradient-section">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold text-green-800 font-great-vibes">Get In Touch</h2>
+                    <p class="text-gray-600 mt-2">We'd love to hear your feedback or suggestions.</p>
+                </div>
+                <form id="contactForm" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="name" name="name" required
+                            class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" required
+                            class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                        <textarea id="message" name="message" rows="4" required
+                            class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit"
+                            class="w-full bg-green-600 text-white py-3 px-6 border border-transparent rounded-md shadow-sm text-base font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p class="font-great-vibes text-2xl mb-2">Radha–Krishna Greetings</p>
+            <p class="mb-4">Made with ❤️ by a Basant </p>
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="hover:text-pink-400 transition"><svg class="w-6 h-6" fill="currentColor"
+                        viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                            clip-rule="evenodd" />
+                    </svg></a>
+                <a href="#" class="hover:text-pink-400 transition"><svg class="w-6 h-6" fill="currentColor"
+                        viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                    </svg></a>
+                <a href="#" class="hover:text-pink-400 transition"><svg class="w-6 h-6" fill="currentColor"
+                        viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.345 2.525c.636-.247 1.363-.416 2.427.465C9.793 2.013 10.147 2 12.315 2zm0 1.623c-2.372 0-2.686.009-3.637.053-.877.04-1.354.197-1.686.325-.363.143-.64.319-.926.605a3.289 3.289 0 00-.605.926c-.128.332-.285.81-.325 1.686-.044.951-.053 1.265-.053 3.637s.009 2.686.053 3.637c.04.877.197 1.354.325 1.686.143.363.319.64.605.926a3.289 3.289 0 00.926.605c.332.128.81.285 1.686.325.951.044 1.265.053 3.637.053s2.686-.009 3.637-.053c.877-.04 1.354-.197 1.686-.325.363-.143.64-.319.926-.605a3.289 3.289 0 00.605-.926c.128.332.285-.81.325-1.686.044-.951.053-1.265-.053-3.637s-.009-2.686-.053-3.637c-.04-.877-.197-1.354-.325-1.686a3.289 3.289 0 00-.605-.926 3.289 3.289 0 00-.926-.605c-.332-.128-.81-.285-1.686-.325-.951-.044-1.265-.053-3.637-.053zM12 9.771a4.229 4.229 0 100 8.458 4.229 4.229 0 000-8.458zm0 6.837a2.608 2.608 0 110-5.216 2.608 2.608 0 010 5.216zm4.965-6.91a1.23 1.23 0 100 2.46 1.23 1.23 0 000-2.46z"
+                            clip-rule="evenodd" />
+                    </svg></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Canvas Setup ---
+            const canvas = document.getElementById('greetingCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set a higher resolution for the canvas for better image quality
+            const canvasWidth = 800;
+            const canvasHeight = 600;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
+            // --- Data ---
+            const backgrounds = [
+                { id: 'bg1', src: 'design-one.png', name: 'Radha Krishna' },
+                { id: 'bg2', src: 'design-two.png', name: 'Radha Krishna' },
+                { id: 'bg3', src: 'design-three.png', name: 'Radha Krishna' }
+            ];
+
+            const stickers = [
+                { id: 'heart', emoji: '❤️', name: 'Heart' },
+                { id: 'lotus', emoji: '🪷', name: 'Lotus' },
+                { id: 'diya', emoji: '🪔', name: 'Diya' },
+                { id: 'om', emoji: '🕉️', name: 'Om' },
+                { id: 'flute', emoji: '🎵', name: 'Flute' },
+                { id: 'peacock', emoji: '🦚', name: 'Peacock' },
+                { id: 'star', emoji: '⭐', name: 'Star' },
+                { id: 'flower', emoji: '🌸', name: 'Flower' }
+            ];
+
+            // --- State ---
+            let cardState = {
+                background: new Image(),
+                text: 'Jai Shri Krishna!',
+                font: 'Poppins',
+                textColor: '#FFFFFF',
+                textEffect: 'none',
+                stickers: [],
+            };
+            // Allow cross-origin images to be used in canvas
+            cardState.background.crossOrigin = "Anonymous";
+
+            // --- UI Element References ---
+            const backgroundOptionsContainer = document.getElementById('backgroundOptions');
+            const textInput = document.getElementById('customText');
+            const fontSelector = document.getElementById('fontSelector');
+            const textColorPicker = document.getElementById('textColor');
+            const textEffectSelector = document.getElementById('textEffect');
+            const stickerOptionsContainer = document.getElementById('stickerOptions');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const shareBtn = document.getElementById('shareBtn');
+            const shareMessage = document.getElementById('shareMessage');
+
+            // --- Functions ---
+
+            /**
+             * Wraps text to fit inside the canvas.
+             * @param {CanvasRenderingContext2D} context The canvas rendering context.
+             * @param {string} text The text to wrap.
+             * @param {number} x The x coordinate to start drawing.
+             * @param {number} y The y coordinate to start drawing.
+             * @param {number} maxWidth The maximum width of a line.
+             * @param {number} lineHeight The height of each line.
+             * @param {boolean} outline Whether to stroke the text instead of filling.
+             */
+            function wrapText(context, text, x, y, maxWidth, lineHeight, outline = false) {
+                const words = text.split(' ');
+                let line = '';
+                let lines = [];
+
+                for (let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = context.measureText(testLine);
+                    const testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        lines.push(line);
+                        line = words[n] + ' ';
+                    } else {
+                        line = testLine;
+                    }
+                }
+                lines.push(line);
+
+                // Adjust starting Y position to keep the block of text centered vertically at the bottom
+                const startY = y - (lines.length - 1) * lineHeight;
+
+                for (let k = 0; k < lines.length; k++) {
+                    if (outline) {
+                        context.strokeText(lines[k].trim(), x, startY + (k * lineHeight));
+                    } else {
+                        context.fillText(lines[k].trim(), x, startY + (k * lineHeight));
+                    }
+                }
+            }
+
+            // Function to draw everything on the canvas
+            function drawCard() {
+                try {
+                    if (!canvas || !ctx) {
+                        return;
+                    }
+                    // Clear previous content
+                    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+                    // 1. Draw background
+                    if (cardState.background.src && cardState.background.complete) {
+                        ctx.drawImage(cardState.background, 0, 0, canvasWidth, canvasHeight);
+                    } else if (cardState.background.src && !cardState.background.complete) {
+                        ctx.fillStyle = '#fbc2eb';
+                        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                        ctx.fillStyle = '#a6c1ee';
+                        ctx.font = 'bold 32px Poppins';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('Loading background...', canvasWidth/2, canvasHeight/2);
+                    }
+
+                    // 2. Draw stickers
+                    cardState.stickers.forEach(sticker => {
+                        ctx.font = '48px Arial';
+                        ctx.fillText(sticker.emoji, sticker.x, sticker.y);
+                    });
+
+                    // 3. Draw text using the new wrapText function
+                    ctx.fillStyle = cardState.textColor;
+                    const fontSize = 48;
+                    ctx.font = `bold ${fontSize}px "${cardState.font}"`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+
+                    // Apply text effects
+                    if (cardState.textEffect === 'shadow') {
+                        ctx.shadowColor = 'rgba(0,0,0,0.7)';
+                        ctx.shadowBlur = 6;
+                        ctx.shadowOffsetX = 2;
+                        ctx.shadowOffsetY = 2;
+                    } else if (cardState.textEffect === 'glow') {
+                        ctx.shadowColor = cardState.textColor;
+                        ctx.shadowBlur = 10;
+                        ctx.shadowOffsetX = 0;
+                        ctx.shadowOffsetY = 0;
+                    } else if (cardState.textEffect === 'outline') {
+                        ctx.strokeStyle = cardState.textColor;
+                        ctx.lineWidth = 2;
+                    }
+
+                    // Call the wrapText function
+                    const maxWidth = canvasWidth - 80;
+                    const lineHeight = fontSize * 1.2;
+                    const x = canvasWidth / 2;
+                    const y = canvasHeight - 50;
+
+                    if (cardState.textEffect === 'outline') {
+                        wrapText(ctx, cardState.text, x, y, maxWidth, lineHeight, true);
+                        ctx.fillStyle = '#FFFFFF';
+                        wrapText(ctx, cardState.text, x, y, maxWidth, lineHeight);
+                    } else {
+                        wrapText(ctx, cardState.text, x, y, maxWidth, lineHeight);
+                    }
+
+                    // Reset shadow and stroke
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                    ctx.strokeStyle = 'transparent';
+                    ctx.lineWidth = 1;
+                } catch (err) {
+                    if (ctx) {
+                        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                        ctx.fillStyle = '#fbc2eb';
+                        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                        ctx.fillStyle = '#a6c1ee';
+                        ctx.font = 'bold 32px Poppins';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('Error rendering preview!', canvasWidth/2, canvasHeight/2);
+                    }
+                    console.error('Live preview error:', err);
+                }
+            }
+
+            // Function to update the card whenever a change is made
+            function updateCard() {
+                cardState.text = textInput.value || 'Jai Shri Krishna!';
+                cardState.font = fontSelector.value;
+                cardState.textColor = textColorPicker.value;
+                cardState.textEffect = textEffectSelector.value;
+                drawCard();
+            }
+
+            // Initialize UI controls
+            function initializeControls() {
+                // Backgrounds
+                backgrounds.forEach((bg, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'control-item cursor-pointer border-2 border-transparent rounded-lg overflow-hidden transition-transform duration-200';
+                    div.innerHTML = `<img src="${bg.src}" alt="${bg.name}" class="w-full h-24 object-cover">`;
+                    div.addEventListener('click', () => {
+                        // Set the background source first
+                        cardState.background.src = bg.src;
+                        // Then assign handlers
+                        cardState.background.onload = () => {
+                            updateCard();
+                        };
+                        cardState.background.onerror = () => {
+                            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                            ctx.fillStyle = '#fbc2eb';
+                            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                            ctx.fillStyle = '#a6c1ee';
+                            ctx.font = 'bold 32px Poppins';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('Image failed to load!', canvasWidth/2, canvasHeight/2);
+                        };
+                        // If image is already cached and complete, force redraw
+                        if (cardState.background.complete) {
+                            updateCard();
+                        }
+
+                        document.querySelectorAll('#backgroundOptions .control-item').forEach(el => el.classList.remove('active'));
+                        div.classList.add('active');
+                    });
+                    backgroundOptionsContainer.appendChild(div);
+
+                    // Set default background on initial load
+                    if (index === 0) {
+                        // We trigger a click to ensure the default is loaded and displayed
+                        setTimeout(() => div.click(), 100);
+                    }
+                });
+
+                // Stickers
+                stickers.forEach(sticker => {
+                    const div = document.createElement('div');
+                    div.className = 'control-item cursor-pointer border-2 border-transparent rounded-lg overflow-hidden transition-transform duration-200 flex items-center justify-center text-4xl';
+                    div.textContent = sticker.emoji;
+                    div.draggable = true;
+                    div.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('text/plain', sticker.emoji);
+                    });
+                    stickerOptionsContainer.appendChild(div);
+                });
+            }
+
+            // --- Event Listeners ---
+            textInput.addEventListener('input', updateCard);
+            fontSelector.addEventListener('change', updateCard);
+            textColorPicker.addEventListener('input', updateCard);
+            textEffectSelector.addEventListener('change', updateCard);
+
+            // Drag and drop for stickers
+            canvas.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            canvas.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const emoji = e.dataTransfer.getData('text/plain');
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                cardState.stickers.push({ emoji, x, y });
+                updateCard();
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.download = 'radha-krishna-greeting.png';
+                // Convert canvas to data URL and set as href
+                link.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+                // Trigger the download
+                link.click();
+            });
+
+            shareBtn.addEventListener('click', async () => {
+                shareMessage.textContent = '';
+                if (!navigator.share) {
+                    shareMessage.textContent = 'Web Share API is not supported on your browser.';
+                    return;
+                }
+
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        shareMessage.textContent = 'Error creating image file.';
+                        return;
+                    }
+                    const file = new File([blob], 'radha-krishna-greeting.png', { type: 'image/png' });
+                    const shareData = {
+                        files: [file],
+                        title: 'A Divine Greeting For You!',
+                        text: 'I created this beautiful Radha-Krishna card for you.',
+                    };
+
+                    try {
+                        // Check if the data can be shared
+                        if (navigator.canShare && navigator.canShare(shareData)) {
+                            await navigator.share(shareData);
+                        } else {
+                            shareMessage.textContent = 'Sharing not possible with this content.';
+                        }
+                    } catch (err) {
+                        console.error('Share failed:', err);
+                        shareMessage.textContent = `Could not share. Error: ${err.name}`;
+                    }
+                }, 'image/png');
+            });
+
+            // --- Mobile & Nav ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu on link click
+            document.querySelectorAll('#mobile-menu a, nav a').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+
+            // --- FAQ Accordion ---
+            const faqAccordion = document.getElementById('faq-accordion');
+            faqAccordion.addEventListener('click', (e) => {
+                const questionButton = e.target.closest('.faq-question');
+                if (questionButton) {
+                    const currentlyActive = faqAccordion.querySelector('.faq-question.active');
+                    if (currentlyActive && currentlyActive !== questionButton) {
+                        currentlyActive.classList.remove('active');
+                    }
+                    questionButton.classList.toggle('active');
+                }
+            });
+
+            // --- Contact Form ---
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, you would handle form submission here (e.g., via AJAX)
+                alert('Thank you for your message!');
+                contactForm.reset();
+            });
+
+            // --- Initial Load ---
+            initializeControls();
+        });
+    </script>
+</body>
+
+</html>
