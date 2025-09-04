@@ -14,7 +14,8 @@ Welcome to **Radha Greeting**! This project aims to create a beautiful, customiz
 - **Responsive Design:** Works seamlessly across mobile, tablet, and desktop devices.
 
 ---
-
+live link (https://basantkr762.github.io/radha-greeting/)
+---
 ## 🚀 Getting Started
 
 ### Prerequisites
